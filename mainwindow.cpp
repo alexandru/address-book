@@ -12,8 +12,6 @@ MainWindow::MainWindow()
     setWindowTitle(tr("Address Book"));
 }
 
-
-
 void MainWindow::createMenus()
 {
     fileMenu = menuBar()->addMenu(tr("&File"));
@@ -38,7 +36,6 @@ void MainWindow::createMenus()
     addAct = new QAction(tr("&Add Entry..."), this);
     toolMenu->addAction(addAct);
     connect(addAct, &QAction::triggered, addressWidget, &AddressWidget::showAddEntryDialog);
-
 
     editAct = new QAction(tr("&Edit Entry..."), this);
     editAct->setEnabled(false);

@@ -24,8 +24,6 @@ void AddressWidget::showAddEntryDialog()
     if (aDialog.exec()) {
         QString name = aDialog.nameText->text();
         QString phone = aDialog.phoneText->text();
-        //QString address = aDialog.addressText->toPlainText();
-
         addEntry(name, phone);
     }
 }
