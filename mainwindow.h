@@ -28,7 +28,6 @@ private:
     QAction *saveAct;
     QAction *exitAct;
     QAction *addAct;
-    QAction *editAct;
     QAction *removeAct;
 };
 //! [0]

@@ -12,7 +12,6 @@ AddressWidget::AddressWidget(QWidget *parent)
         this, &AddressWidget::addEntry);
 
     addTab(newAddressTab, "Address Book");
-
     setupTabs();
 }
 
@@ -29,8 +28,6 @@ void AddressWidget::showAddEntryDialog()
         addEntry(name, phone, email);
     }
 }
-
-
 
 void AddressWidget::addEntry(QString name, QString phone, QString email)
 {
@@ -53,45 +50,6 @@ void AddressWidget::addEntry(QString name, QString phone, QString email)
     }
 }
 
-
-void AddressWidget::editEntry()
-{
-    QTableView *temp = static_cast<QTableView*>(currentWidget());
-    QSortFilterProxyModel *proxy = static_cast<QSortFilterProxyModel*>(temp->model());
-    QItemSelectionModel *selectionModel = temp->selectionModel();
-
-    QModelIndexList indexes = selectionModel->selectedRows();
-    QString name;
-    QString phone;
-    QString email;
-    int row = -1;
-
-    foreach (QModelIndex index, indexes) {
-        row = proxy->mapToSource(index).row();
-
-        QModelIndex nameIndex = table->index(row, 0, QModelIndex());
-        QVariant varName = table->data(nameIndex, Qt::DisplayRole);
-        name = varName.toString();
-
-        QModelIndex phoneIndex = table->index(row, 1, QModelIndex());
-        QVariant varPhone = table->data(phoneIndex, Qt::DisplayRole);
-        phone = varPhone.toString();
-
-        QModelIndex emailIndex = table->index(row, 2, QModelIndex());
-        QVariant varAddr = table->data(emailIndex, Qt::DisplayRole);
-        email = varAddr.toString();
-    }
-
-    AddDialog aDialog;
-    aDialog.setWindowTitle(tr("Edit a Contact"));
-
-    aDialog.nameText->setReadOnly(true);
-    aDialog.nameText->setText(name);
-    aDialog.phoneText->setText(phone);
-    aDialog.emailText->setText(email);
-}
-
-
 void AddressWidget::removeEntry()
 {
     QTableView *temp = static_cast<QTableView*>(currentWidget());
@@ -109,7 +67,6 @@ void AddressWidget::removeEntry()
         insertTab(0, newAddressTab, "Address Book");
     }
 }
-
 
 void AddressWidget::setupTabs()
 {
