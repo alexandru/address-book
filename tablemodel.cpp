@@ -5,10 +5,10 @@ TableModel::TableModel(QObject *parent)
 {
 }
 
-TableModel::TableModel(QList<QPair<QString, QString> > pairs, QObject *parent)
+TableModel::TableModel(QList<ContactEntry> list, QObject *parent)
     : QAbstractTableModel(parent)
 {
-    listOfPairs = pairs;
+    entries = list;
 }
 
 
@@ -16,7 +16,7 @@ TableModel::TableModel(QList<QPair<QString, QString> > pairs, QObject *parent)
 int TableModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
-    return listOfPairs.size();
+    return entries.size();
 }
 
 int TableModel::columnCount(const QModelIndex &parent) const
@@ -32,16 +32,16 @@ QVariant TableModel::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
-    if (index.row() >= listOfPairs.size() || index.row() < 0)
+    if (index.row() >= entries.size() || index.row() < 0)
         return QVariant();
 
     if (role == Qt::DisplayRole) {
-        QPair<QString, QString> pair = listOfPairs.at(index.row());
+        ContactEntry entry = entries.at(index.row());
 
         if (index.column() == 0)
-            return pair.first;
+            return entry.getName();
         else if (index.column() == 1)
-            return pair.second;
+            return entry.getPhoneNr();
     }
     return QVariant();
 }
@@ -56,10 +56,8 @@ QVariant TableModel::headerData(int section, Qt::Orientation orientation, int ro
         switch (section) {
             case 0:
                 return tr("Name");
-
             case 1:
                 return tr("Phone no.");
-
             default:
                 return QVariant();
         }
@@ -75,8 +73,8 @@ bool TableModel::insertRows(int position, int rows, const QModelIndex &index)
     beginInsertRows(QModelIndex(), position, position + rows - 1);
 
     for (int row = 0; row < rows; ++row) {
-        QPair<QString, QString> pair(" ", " ");
-        listOfPairs.insert(position, pair);
+        ContactEntry entry(" ", " ");
+        entries.insert(position, entry);
     }
 
     endInsertRows();
@@ -91,7 +89,7 @@ bool TableModel::removeRows(int position, int rows, const QModelIndex &index)
     beginRemoveRows(QModelIndex(), position, position + rows - 1);
 
     for (int row = 0; row < rows; ++row) {
-        listOfPairs.removeAt(position);
+        entries.removeAt(position);
     }
 
     endRemoveRows();
@@ -105,16 +103,16 @@ bool TableModel::setData(const QModelIndex &index, const QVariant &value, int ro
     if (index.isValid() && role == Qt::EditRole) {
         int row = index.row();
 
-        QPair<QString, QString> p = listOfPairs.value(row);
+        ContactEntry p = entries.value(row);
 
         if (index.column() == 0)
-            p.first = value.toString();
+            p = p.withName(value.toString());
         else if (index.column() == 1)
-            p.second = value.toString();
+            p = p.withPhoneNr(value.toString());
         else
             return false;
 
-        listOfPairs.replace(row, p);
+        entries.replace(row, p);
         emit(dataChanged(index, index));
 
         return true;
@@ -135,8 +133,8 @@ Qt::ItemFlags TableModel::flags(const QModelIndex &index) const
 //! [7]
 
 //! [8]
-QList< QPair<QString, QString> > TableModel::getList()
+QList<ContactEntry> TableModel::getList()
 {
-    return listOfPairs;
+    return entries;
 }
 //! [8]

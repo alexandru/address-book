@@ -3,7 +3,7 @@
 
 #include "newaddresstab.h"
 #include "tablemodel.h"
-
+#include "contactentry.h"
 #include <QItemSelection>
 #include <QTabWidget>
 

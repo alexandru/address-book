@@ -24,6 +24,7 @@ public:
 private:
     QLabel *nameLabel;
     QLabel *phoneLabel;
+    //QLabel *addressLabel;
     QPushButton *okButton;
     QPushButton *cancelButton;
 };

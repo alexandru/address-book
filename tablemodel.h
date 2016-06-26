@@ -3,7 +3,7 @@
 
 #include <QAbstractTableModel>
 #include <QList>
-#include <QPair>
+#include "contactentry.h"
 
 //! [0]
 class TableModel : public QAbstractTableModel
@@ -12,7 +12,7 @@ class TableModel : public QAbstractTableModel
 
 public:
     TableModel(QObject *parent = 0);
-    TableModel(QList<QPair<QString, QString> > listofPairs, QObject *parent = 0);
+    TableModel(QList<ContactEntry> entries, QObject *parent = 0);
 
     int rowCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
     int columnCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
@@ -22,10 +22,10 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) Q_DECL_OVERRIDE;
     bool insertRows(int position, int rows, const QModelIndex &index = QModelIndex()) Q_DECL_OVERRIDE;
     bool removeRows(int position, int rows, const QModelIndex &index = QModelIndex()) Q_DECL_OVERRIDE;
-    QList<QPair<QString, QString> > getList();
+    QList<ContactEntry> getList();
 
 private:
-    QList<QPair<QString, QString> > listOfPairs;
+    QList<ContactEntry> entries;
 };
 //! [0]
 

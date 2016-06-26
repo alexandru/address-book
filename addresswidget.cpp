@@ -24,6 +24,8 @@ void AddressWidget::showAddEntryDialog()
     if (aDialog.exec()) {
         QString name = aDialog.nameText->text();
         QString phone = aDialog.phoneText->text();
+        //QString address = aDialog.addressText->toPlainText();
+
         addEntry(name, phone);
     }
 }
@@ -32,10 +34,10 @@ void AddressWidget::showAddEntryDialog()
 
 void AddressWidget::addEntry(QString name, QString phone)
 {
-    QList<QPair<QString, QString> >list = table->getList();
-    QPair<QString, QString> pair(name, phone);
+    QList<ContactEntry> list = table->getList();
+    ContactEntry entry(name, phone);
 
-    if (!list.contains(pair)) {
+    if (!list.contains(entry)) {
         table->insertRows(0, 1, QModelIndex());
 
         QModelIndex index = table->index(0, 0, QModelIndex());
@@ -162,17 +164,17 @@ void AddressWidget::readFromFile(const QString &fileName)
         return;
     }
 
-    QList<QPair<QString, QString> > pairs = table->getList();
+    QList<ContactEntry> entries = table->getList();
     QDataStream in(&file);
-    in >> pairs;
+    in >> entries;
 
-    if (pairs.isEmpty()) {
+    if (entries.isEmpty()) {
         QMessageBox::information(this, tr("No contacts in file"),
                                  tr("The file you are attempting to open contains no contacts."));
     } else {
-        for (int i=0; i<pairs.size(); ++i) {
-            QPair<QString, QString> p = pairs.at(i);
-            addEntry(p.first, p.second);
+        for (int i=0; i<entries.size(); ++i) {
+            ContactEntry p = entries.at(i);
+            addEntry(p.getName(), p.getPhoneNr());
         }
     }
 }
@@ -187,7 +189,7 @@ void AddressWidget::writeToFile(const QString &fileName)
         return;
     }
 
-    QList<QPair<QString, QString> > pairs = table->getList();
+    QList<ContactEntry> entries = table->getList();
     QDataStream out(&file);
-    out << pairs;
+    out << entries;
 }
