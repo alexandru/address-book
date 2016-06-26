@@ -19,12 +19,12 @@ public:
     AddDialog(QWidget *parent = 0);
     QLineEdit *nameText;
     QLineEdit *phoneText;
-    //QTextEdit *addressText;
+    QLineEdit *emailText;
 
 private:
     QLabel *nameLabel;
     QLabel *phoneLabel;
-    //QLabel *addressLabel;
+    QLabel *emailLabel;
     QPushButton *okButton;
     QPushButton *cancelButton;
 };

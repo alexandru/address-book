@@ -29,9 +29,9 @@ void NewAddressTab::addEntry()
     if (aDialog.exec()) {
         QString name = aDialog.nameText->text();
         QString phone = aDialog.phoneText->text();
-        //QString address = aDialog.addressText->toPlainText();
+        QString email = aDialog.emailText->text();
 
-        emit sendDetails(name, phone);
+        emit sendDetails(name, phone, email);
     }
 }
 

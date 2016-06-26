@@ -24,28 +24,28 @@ void AddressWidget::showAddEntryDialog()
     if (aDialog.exec()) {
         QString name = aDialog.nameText->text();
         QString phone = aDialog.phoneText->text();
-        //QString address = aDialog.addressText->toPlainText();
+        QString email = aDialog.emailText->text();
 
-        addEntry(name, phone);
+        addEntry(name, phone, email);
     }
 }
 
 
 
-void AddressWidget::addEntry(QString name, QString phone)
+void AddressWidget::addEntry(QString name, QString phone, QString email)
 {
     QList<ContactEntry> list = table->getList();
-    ContactEntry entry(name, phone);
+    ContactEntry entry(name, phone, email);
 
     if (!list.contains(entry)) {
         table->insertRows(0, 1, QModelIndex());
 
         QModelIndex index = table->index(0, 0, QModelIndex());
         table->setData(index, name, Qt::EditRole);
-        //index = table->index(0, 1, QModelIndex());
-        //table->setData(index, address, Qt::EditRole);
         index = table->index(0, 1, QModelIndex());
         table->setData(index, phone, Qt::EditRole);
+        index = table->index(0, 2, QModelIndex());
+        table->setData(index, email, Qt::EditRole);
         removeTab(indexOf(newAddressTab));
     } else {
         QMessageBox::information(this, tr("Duplicate Name"),
@@ -63,25 +63,24 @@ void AddressWidget::editEntry()
     QModelIndexList indexes = selectionModel->selectedRows();
     QString name;
     QString phone;
-    //QString address;
+    QString email;
     int row = -1;
 
     foreach (QModelIndex index, indexes) {
         row = proxy->mapToSource(index).row();
+
         QModelIndex nameIndex = table->index(row, 0, QModelIndex());
         QVariant varName = table->data(nameIndex, Qt::DisplayRole);
         name = varName.toString();
 
-//        QModelIndex addressIndex = table->index(row, 1, QModelIndex());
-//        QVariant varAddr = table->data(addressIndex, Qt::DisplayRole);
-//        address = varAddr.toString();
-
         QModelIndex phoneIndex = table->index(row, 1, QModelIndex());
         QVariant varPhone = table->data(phoneIndex, Qt::DisplayRole);
         phone = varPhone.toString();
+
+        QModelIndex emailIndex = table->index(row, 2, QModelIndex());
+        QVariant varAddr = table->data(emailIndex, Qt::DisplayRole);
+        email = varAddr.toString();
     }
-
-
 
     AddDialog aDialog;
     aDialog.setWindowTitle(tr("Edit a Contact"));
@@ -89,15 +88,7 @@ void AddressWidget::editEntry()
     aDialog.nameText->setReadOnly(true);
     aDialog.nameText->setText(name);
     aDialog.phoneText->setText(phone);
-//    aDialog.addressText->setText(address);
-
-//    if (aDialog.exec()) {
-//        //QString newAddress = aDialog.addressText->toPlainText();
-//        if (newAddress != address) {
-//            QModelIndex index = table->index(row, 1, QModelIndex());
-//            table->setData(index, newAddress, Qt::EditRole);
-//        }
-//    }
+    aDialog.emailText->setText(email);
 }
 
 
@@ -123,11 +114,11 @@ void AddressWidget::removeEntry()
 void AddressWidget::setupTabs()
 {
     QStringList groups;
-    groups << "ABC" << "DEF" << "GHI" << "JKL" << "MNO" << "PQR" << "STU" << "VW" << "XYZ";
+    groups << "All" << "ABC" << "DEF" << "GHI" << "JKL" << "MNO" << "PQR" << "STU" << "VW" << "XYZ";
 
     for (int i = 0; i < groups.size(); ++i) {
         QString str = groups.at(i);
-        QString regExp = QString("^[%1].*").arg(str);
+        QString regExp = (i == 0) ? QString("^.*") : QString("^[%1].*").arg(str);
 
         proxyModel = new QSortFilterProxyModel(this);
         proxyModel->setSourceModel(table);
@@ -174,7 +165,7 @@ void AddressWidget::readFromFile(const QString &fileName)
     } else {
         for (int i=0; i<entries.size(); ++i) {
             ContactEntry p = entries.at(i);
-            addEntry(p.getName(), p.getPhoneNr());
+            addEntry(p.getName(), p.getPhoneNr(), p.getEmail());
         }
     }
 }

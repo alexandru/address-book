@@ -22,7 +22,7 @@ int TableModel::rowCount(const QModelIndex &parent) const
 int TableModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
-    return 2;
+    return 3;
 }
 
 
@@ -42,6 +42,8 @@ QVariant TableModel::data(const QModelIndex &index, int role) const
             return entry.getName();
         else if (index.column() == 1)
             return entry.getPhoneNr();
+        else if (index.column() == 2)
+            return entry.getEmail();
     }
     return QVariant();
 }
@@ -57,7 +59,9 @@ QVariant TableModel::headerData(int section, Qt::Orientation orientation, int ro
             case 0:
                 return tr("Name");
             case 1:
-                return tr("Phone no.");
+                return tr("Phone Number");
+            case 2:
+                return tr("Email");
             default:
                 return QVariant();
         }
@@ -73,7 +77,7 @@ bool TableModel::insertRows(int position, int rows, const QModelIndex &index)
     beginInsertRows(QModelIndex(), position, position + rows - 1);
 
     for (int row = 0; row < rows; ++row) {
-        ContactEntry entry(" ", " ");
+        ContactEntry entry(" ", " ", " ");
         entries.insert(position, entry);
     }
 
@@ -109,6 +113,8 @@ bool TableModel::setData(const QModelIndex &index, const QVariant &value, int ro
             p = p.withName(value.toString());
         else if (index.column() == 1)
             p = p.withPhoneNr(value.toString());
+        else if (index.column() == 2)
+            p = p.withEmail(value.toString());
         else
             return false;
 

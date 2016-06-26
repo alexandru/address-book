@@ -6,14 +6,14 @@ AddDialog::AddDialog(QWidget *parent)
     : QDialog(parent)
 {
     nameLabel = new QLabel("Name");
-    //addressLabel = new QLabel("Address");
     phoneLabel = new QLabel("Phone no.");
+    emailLabel = new QLabel("Email");
     okButton = new QPushButton("OK");
     cancelButton = new QPushButton("Cancel");
 
     nameText = new QLineEdit;
     phoneText = new QLineEdit;
-    //addressText = new QTextEdit;
+    emailText = new QLineEdit;
 
     QGridLayout *gLayout = new QGridLayout;
     //gLayout->setColumnStretch(1, 2);
@@ -26,12 +26,14 @@ AddDialog::AddDialog(QWidget *parent)
     gLayout->addWidget(phoneLabel, 1, 0);
     gLayout->addWidget(phoneText, 1, 1);
 
+    gLayout->addWidget(emailLabel, 2,0);
+    gLayout->addWidget(emailText, 2,1);
 
     QHBoxLayout *buttonLayout = new QHBoxLayout;
     buttonLayout->addWidget(okButton);
     buttonLayout->addWidget(cancelButton);
 
-    gLayout->addLayout(buttonLayout, 2, 1, Qt::AlignRight);
+    gLayout->addLayout(buttonLayout, 3, 1, Qt::AlignRight);
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addLayout(gLayout);

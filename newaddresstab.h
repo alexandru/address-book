@@ -21,7 +21,7 @@ public slots:
     void addEntry();
 
 signals:
-    void sendDetails(QString name, QString phone);
+    void sendDetails(QString name, QString phone, QString email);
 
 private:
     QLabel *descriptionLabel;

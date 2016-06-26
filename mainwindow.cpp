@@ -12,8 +12,6 @@ MainWindow::MainWindow()
     setWindowTitle(tr("Address Book"));
 }
 
-
-
 void MainWindow::createMenus()
 {
     fileMenu = menuBar()->addMenu(tr("&File"));
@@ -21,7 +19,6 @@ void MainWindow::createMenus()
     openAct = new QAction(tr("&Open..."), this);
     fileMenu->addAction(openAct);
     connect(openAct, &QAction::triggered, this, &MainWindow::openFile);
-
 
     saveAct = new QAction(tr("&Save As..."), this);
     fileMenu->addAction(saveAct);

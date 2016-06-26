@@ -5,28 +5,33 @@
 
 struct ContactEntry
 {
-    ContactEntry() : name(""), phoneNr("") {}
+    ContactEntry() : name(""), phoneNr(""), email("") {}
 
-    ContactEntry(QString name, QString phoneNr) :
-        name(name), phoneNr(phoneNr) {}
+    ContactEntry(QString name, QString phoneNr, QString email) :
+        name(name), phoneNr(phoneNr), email(email) {}
 
     QString getName() const { return name; }
     QString getPhoneNr() const { return phoneNr; }
+    QString getEmail() const { return email; }
 
     ContactEntry withName(QString name) const {
-        return ContactEntry(name, phoneNr);
+        return ContactEntry(name, phoneNr, email);
     }
 
     ContactEntry withPhoneNr(QString phoneNr) const {
-        return ContactEntry(name, phoneNr);
+        return ContactEntry(name, phoneNr, email);
+    }
+
+    ContactEntry withEmail(QString email) const {
+        return ContactEntry(name, phoneNr, email);
     }
 
     bool operator==(const ContactEntry &l) const {
-        return name == l.getName() && phoneNr == l.getPhoneNr();
+        return name == l.getName() && phoneNr == l.getPhoneNr() && email == l.getEmail();
     }
 
     bool operator!=(const ContactEntry &l) const {
-        return name != l.getName() || phoneNr != l.getPhoneNr();
+        return name != l.getName() || phoneNr != l.getPhoneNr() || email != l.getEmail();
     }
 
     friend QDataStream& operator<<(QDataStream& os, const ContactEntry& ce);
@@ -35,6 +40,7 @@ struct ContactEntry
 private:
     QString name;
     QString phoneNr;
+    QString email;
 };
 
 #endif // CONTACTENTRY_H
